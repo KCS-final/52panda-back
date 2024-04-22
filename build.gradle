@@ -37,6 +37,19 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+
+	//OAuth
+	// 스프링 시큐리티 의존성
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+
+	// 스프링 시큐리티 테스트 의존성
+	testImplementation 'org.springframework.security:spring-security-test'
+
+	// OAuth2 클라이언트 의존성
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+	// JWT 토큰을 위한 의존성
+	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 }
 
 tasks.named('test') {
