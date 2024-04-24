@@ -38,18 +38,18 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 
-	//OAuth
-	// 스프링 시큐리티 의존성
-	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-security' // 스프링 시큐리티
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server' // OAuth 리소스 서버
+	implementation 'io.jsonwebtoken:jjwt:0.9.1' // JWT 토큰
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf' // 템플릿 엔진 (옵션)
+	implementation 'org.springframework.boot:spring-boot-devtools' // 개발 도구
+	implementation 'org.springframework.security:spring-security-oauth2-jose' // JOSE 관련 기능
 
-	// 스프링 시큐리티 테스트 의존성
-	testImplementation 'org.springframework.security:spring-security-test'
+	compileOnly 'org.projectlombok:lombok' // 롬복(선택)
+	annotationProcessor 'org.projectlombok:lombok' // 롬복(선택)
 
-	// OAuth2 클라이언트 의존성
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-
-	// JWT 토큰을 위한 의존성
-	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test' // 테스트
+	testImplementation 'org.springframework.security:spring-security-test' // 보안 테스트
 }
 
 tasks.named('test') {
