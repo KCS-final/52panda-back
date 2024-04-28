@@ -35,18 +35,15 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 	annotationProcessor 'org.projectlombok:lombok'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 
 	implementation 'org.springframework.boot:spring-boot-starter-security' // 스프링 시큐리티
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server' // OAuth 리소스 서버
 	implementation 'io.jsonwebtoken:jjwt:0.9.1' // JWT 토큰
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf' // 템플릿 엔진 (옵션)
 	implementation 'org.springframework.boot:spring-boot-devtools' // 개발 도구
 	implementation 'org.springframework.security:spring-security-oauth2-jose' // JOSE 관련 기능
-
-	compileOnly 'org.projectlombok:lombok' // 롬복(선택)
-	annotationProcessor 'org.projectlombok:lombok' // 롬복(선택)
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test' // 테스트
 	testImplementation 'org.springframework.security:spring-security-test' // 보안 테스트
