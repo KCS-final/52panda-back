@@ -1,5 +1,7 @@
 package com.kcs3.panda.domain.user.auth.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
@@ -15,6 +17,7 @@ import java.util.*;
 @Service
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
+    private static final Logger logger = LoggerFactory.getLogger(CustomOAuth2UserService.class);
     private final UserRepository userRepository;
 
     public CustomOAuth2UserService(UserRepository userRepository) {
@@ -23,23 +26,27 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        // OAuth2User 정보를 가져오기
+        logger.info("Loading OAuth2 user information...");
+
         OAuth2User oAuth2User = new DefaultOAuth2User(
-                Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")), // 권한
-                Map.of("sub", userRequest.getAccessToken().getTokenValue()),   // 사용자 속성
-                "sub"                                                          // 주 식별자
+                Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")),
+                Map.of("sub", userRequest.getAccessToken().getTokenValue()),
+                "sub"
         );
 
-        String nickname = (String) oAuth2User.getAttribute("name"); // 구글에서 닉네임 가져오기
+        String nickname = (String) oAuth2User.getAttribute("name");
+        logger.debug("Fetched nickname: {}", nickname);
 
-        // 닉네임으로 사용자 조회
         User user = userRepository.findByUserNickname(nickname);
 
-        // 새로운 사용자라면 저장
         if (user == null) {
+            logger.info("User not found. Creating a new user with nickname: {}", nickname);
             user = new User();
             user.setUserNickname(nickname);
             userRepository.save(user);
+            logger.info("New user saved successfully.");
+        } else {
+            logger.info("Existing user found with nickname: {}", nickname);
         }
 
         return oAuth2User;
