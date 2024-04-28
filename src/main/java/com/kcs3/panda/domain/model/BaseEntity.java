@@ -30,9 +30,6 @@ import java.time.Instant;
 @AllArgsConstructor
 
 public class BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     @CreatedDate
     @JsonSerialize(using = LocalDateTimeSerializer.class)
@@ -48,24 +45,6 @@ public class BaseEntity {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!this.getClass().equals(obj.getClass())) {
-            return false;
-        }
-        BaseEntity baseEntity = (BaseEntity) obj;
-        return Objects.equals(this.id, baseEntity.id);
-    }
 
-    @Override
-    public int hashCode() {
-        if (id == null) {
-            return 0;
-        }
-        return id.hashCode();
-    }
 }
 

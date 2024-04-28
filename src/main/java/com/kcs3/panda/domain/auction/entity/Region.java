@@ -2,7 +2,10 @@ package com.kcs3.panda.domain.auction.entity;
 
 import com.kcs3.panda.domain.model.BaseEntity;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
 
 
@@ -12,15 +15,16 @@ import org.hibernate.annotations.DynamicUpdate;
 @NoArgsConstructor
 @AllArgsConstructor
 @DynamicUpdate
-@Table(name = "TradingMethod")
-public class TradingMethod extends BaseEntity {
-
+@Table(name = "Location")
+public class Region extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="tradingMethodId", nullable = false)
-    private Long tradingMethodId;
+    @Column(name="regionId", nullable = false)
+    private Long regionId;
 
     @Column(nullable = false)
-    private int traingMethod;
+    private String location;
+
+
 }
