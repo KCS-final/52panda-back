@@ -47,6 +47,13 @@ dependencies {
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test' // 테스트
 	testImplementation 'org.springframework.security:spring-security-test' // 보안 테스트
+
+	// log4j
+	implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+	implementation('org.springframework.boot:spring-boot-starter') {
+		exclude group: 'org.apache.logging.log4j', module: 'log4j-to-slf4j'
+	}
+
 }
 
 tasks.named('test') {

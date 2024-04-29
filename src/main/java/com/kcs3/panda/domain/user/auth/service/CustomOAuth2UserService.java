@@ -26,29 +26,39 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        logger.info("Loading OAuth2 user information...");
+        logger.info("Loading OAuth2 user information...12345");
+
+        // 토큰 값 가져오기
+        String accessToken = userRequest.getAccessToken().getTokenValue();
+
+        // 토큰 값이 제대로 가져와졌는지 확인
+        if (accessToken == null || accessToken.isBlank()) {
+            logger.error("Access token is invalid or missing.12345");
+            throw new OAuth2AuthenticationException("Invalid or missing access token.12345");
+        }
+
+        logger.debug("Access token retrieved 12345: {}", accessToken);
 
         OAuth2User oAuth2User = new DefaultOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")),
-                Map.of("sub", userRequest.getAccessToken().getTokenValue()),
+                Map.of("sub", accessToken),
                 "sub"
         );
 
         String nickname = (String) oAuth2User.getAttribute("name");
-        logger.debug("Fetched nickname: {}", nickname);
+        logger.debug("Fetched nickname12345: {}", nickname);
 
         User user = userRepository.findByUserNickname(nickname);
-
         if (user == null) {
-            logger.info("User not found. Creating a new user with nickname: {}", nickname);
             user = new User();
             user.setUserNickname(nickname);
+            user.setUserEmail("default@example.com");
+
+            logger.info("Saving new user with nickname12345: {} and email12345: {}", nickname, user.getUserEmail());
             userRepository.save(user);
-            logger.info("New user saved successfully.");
-        } else {
-            logger.info("Existing user found with nickname: {}", nickname);
         }
 
         return oAuth2User;
     }
 }
+
