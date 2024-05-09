@@ -1,31 +1,39 @@
 package com.kcs3.panda.domain.firebase.service;
 
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.Message;
-import com.google.firebase.messaging.WebpushConfig;
-import com.google.firebase.messaging.WebpushNotification;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
+import com.kcs3.panda.domain.firebase.service.NotificationService;
+import com.kcs3.panda.global.auth.LoginUser;
+import com.kcs3.panda.global.auth.UserSession;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.concurrent.ExecutionException;
 
-@Service
-public class FCMService {
 
-    private static final Logger logger = LoggerFactory.getLogger(FCMService.class);
+@RestController
+public class NotificationApiController {
 
-    public void send(final NotificationRequest notificationRequest) throws InterruptedException, ExecutionException {
-        Message message = Message.builder()
-                .setToken(notificationRequest.getToken())
-                .setWebpushConfig(WebpushConfig.builder().putHeader("ttl", "300")
-                        .setNotification(new WebpushNotification(notificationRequest.getTitle(),
-                                notificationRequest.getMessage()))
-                        .build())
-                .build();
+    private final NotificationService notificationService;
 
-        String response = FirebaseMessaging.getInstance().sendAsync(message).get();
-        logger.info("Sent message: " + response);
+    public NotificationApiController(NotificationService notificationService) {
+        this.notificationService = notificationService;
     }
+
+    @PostMapping("/register")
+    public ResponseEntity register(@RequestBody String token, @LoginUser UserSession userSession) {
+        notificationService.register(userSession.getId(), token);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity logout(@LoginUser UserSession userSession, HttpSession httpSession) {
+        loginService.logout(userSession.getId());
+        notificationService.deleteToken(userSession.getId());
+        httpSession.removeAttribute(USER_SESSION_KEY);
+        return ResponseEntity.ok().build();
+
+    }
+
 
 }
