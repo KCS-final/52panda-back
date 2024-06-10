@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.antlr.v4.runtime.misc.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -348,5 +349,16 @@ public class ItemService {
                 .collect(Collectors.toList());
     }
 
-
+    //프론트에서 쿠키 받아서 저장하기.
+    @Transactional
+    public void addItemToUserCookies(Long userId, Long itemId) {
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.getCookies().add(itemId);
+            userRepository.save(user);
+        } else {
+            throw new RuntimeException("User not found");
+        }
+    }
 }
