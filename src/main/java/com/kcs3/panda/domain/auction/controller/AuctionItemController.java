@@ -173,4 +173,9 @@ public class AuctionItemController {
         String status = isDeleted ? "success" : "fail";
         return ResponseEntity.status(HttpStatus.OK).body(new NormalResponse(status, message));
     }
+
+    @PostMapping("/Cookie/{userId}/{itemId}")
+    public void addCookie(@PathVariable Long userId, @PathVariable Long itemId) {
+        itemService.addItemToUserCookies(userId, itemId);
+    }
 }
